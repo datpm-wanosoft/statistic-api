@@ -6,6 +6,7 @@ from fastapi.responses import JSONResponse
 from app.auth.adapter.input.api import router as auth_router
 from app.container import Container
 from app.user.adapter.input.api import router as user_router
+from app.statistic_log.adapter.input.api import router as statistic_router
 from core.config import config
 from core.exceptions import CustomException
 from core.fastapi.dependencies import Logging
@@ -24,6 +25,7 @@ def init_routers(app_: FastAPI) -> None:
     auth_router.container = container
     app_.include_router(user_router)
     app_.include_router(auth_router)
+    app_.include_router(statistic_router)
 
 
 def init_listeners(app_: FastAPI) -> None:
@@ -69,10 +71,6 @@ def make_middleware() -> list[Middleware]:
     return middleware
 
 
-def init_cache() -> None:
-    Cache.init(backend=RedisBackend(), key_maker=CustomKeyMaker())
-
-
 def create_app() -> FastAPI:
     app_ = FastAPI(
         title="Hide",
@@ -85,7 +83,7 @@ def create_app() -> FastAPI:
     )
     init_routers(app_=app_)
     init_listeners(app_=app_)
-    init_cache()
+    
     return app_
 
 

@@ -18,6 +18,10 @@ class Config(BaseSettings):
     REDIS_HOST: str = "localhost"
     REDIS_PORT: int = 6379
 
+    CLICK_HOUSE_HOST: str = "localhost"
+    CLICK_HOUSE_PORT: int = 9000
+    CLICK_HOUSE_DB: str = "fastapi"
+
 
 class TestConfig(Config):
     WRITER_DB_URL: str = "mysql+aiomysql://fastapi:fastapi@localhost:3306/fastapi_test"
