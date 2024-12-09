@@ -6,7 +6,6 @@ from fastapi import Request
 from app.container import Container
 from core.fastapi.dependencies import (
     AllowAll,
-    IsAdmin,
     IsAuthenticated,
     PermissionDependency,
 )
@@ -25,37 +24,6 @@ async def test_permission_dependency_is_authenticated():
     # When, Then
     with pytest.raises(UnauthorizedException):
         await dependency(request=request)
-
-
-@pytest.mark.asyncio
-async def test_permission_dependency_is_admin_user_is_not_admin():
-    # Given
-    dependency = PermissionDependency(permissions=[IsAdmin])
-    request = AsyncMock(spec=Request)
-    user_id = 1
-    request.user = Mock(id=user_id)
-    user_service_mock = AsyncMock()
-    user_service_mock.is_admin.return_value = False
-
-    # When, Then
-    with container.user_service.override(user_service_mock):
-        with pytest.raises(UnauthorizedException):
-            await dependency(request=request)
-
-
-@pytest.mark.asyncio
-async def test_permission_dependency_is_admin_user_id_is_none():
-    # Given
-    dependency = PermissionDependency(permissions=[IsAdmin])
-    request = AsyncMock(spec=Request)
-    request.user = Mock(id=None)
-    user_service_mock = AsyncMock()
-    user_service_mock.is_admin.return_value = False
-
-    # When, Then
-    with container.user_service.override(user_service_mock):
-        with pytest.raises(UnauthorizedException):
-            await dependency(request=request)
 
 
 @pytest.mark.asyncio

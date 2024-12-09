@@ -8,7 +8,6 @@ from fastapi.security.base import SecurityBase
 from starlette import status
 
 from app.container import Container
-from app.user.domain.usecase.user import UserUseCase
 from core.exceptions import CustomException
 
 
@@ -31,23 +30,6 @@ class IsAuthenticated(BasePermission):
 
     async def has_permission(self, request: Request) -> bool:
         return request.user.id is not None
-
-
-class IsAdmin(BasePermission):
-    exception = UnauthorizedException
-
-    @inject
-    async def has_permission(
-        self,
-        request: Request,
-        usecase: UserUseCase = Depends(Provide[Container.user_service]),
-    ) -> bool:
-        user_id = request.user.id
-        if not user_id:
-            return False
-
-        return await usecase.is_admin(user_id=user_id)
-
 
 class AllowAll(BasePermission):
     async def has_permission(self, request: Request) -> bool:

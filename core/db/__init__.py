@@ -1,9 +1,8 @@
-from .session import Base, session, session_factory
+from .session import Base
 from .transactional import Transactional
 
 __all__ = [
     "Base",
-    "session",
     "Transactional",
     "session_factory",
 ]

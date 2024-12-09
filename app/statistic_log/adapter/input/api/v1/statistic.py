@@ -6,7 +6,7 @@ from app.statistic_log.adapter.input.api.v1.request import StatisticLogRequest
 from app.statistic_log.adapter.input.api.v1.response import StatsticLogResponse
 from app.statistic_log.domain.command import CreateStatisticLogCommand
 from app.statistic_log.domain.usecase.statistic import StatisticLogUseCase
-from core.fastapi.dependencies import IsAdmin, PermissionDependency
+from core.fastapi.dependencies import PermissionDependency
 
 statistic_router = APIRouter()
 
